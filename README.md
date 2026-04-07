@@ -1,4 +1,4 @@
-# Binary star evolution in REBOUNDx
+# Binary Star Evolution Modules in REBOUNDx 
 ** Note: the current repo is temporary while the new modules are fully integrated into main REBOUNDx. **
 
 Paper: <...>
