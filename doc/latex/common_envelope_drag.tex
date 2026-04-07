@@ -1,0 +1,79 @@
+\section{Common-Envelope Drag Implementation}
+\label{sec:ce_drag}
+
+This document describes the implementation of common-envelope drag and
+dynamical friction within the \texttt{roche\_lobe\_mass\_transfer}
+effect.  When a companion orbits inside the extended envelope of a giant
+star, gas drag causes the orbit to decay and deposits orbital energy
+into the envelope.  We follow the formulation of dynamical friction in a
+gaseous medium as outlined by \citet{Ostriker1999} and applied to common
+envelope evolution in, e.g., \citet{MacLeod2018}.
+
+\subsection{Density and Sound Speed Profiles}
+The local gas density is assumed to follow a power--law profile
+\begin{equation}
+  \rho(r) = \rho_0 \left(\frac{r}{R_d}\right)^{\alpha_\rho},
+\end{equation}
+where $R_d$ is the donor's radius.  The sound speed profile is
+\begin{equation}
+  c_s(r) = c_{s,0} \left(\frac{r}{R_d}\right)^{\alpha_{c_s}} .
+\end{equation}
+The parameters $\rho_0$, $\alpha_\rho$, $c_{s,0}$ and
+$\alpha_{c_s}$ are specified by the user.
+
+\subsection{Dynamical Friction Force}
+For a companion of mass $m$ moving with velocity $v$ relative to the
+local gas, the gravitational drag acceleration is
+\begin{equation}
+  a_{\rm DF} = - \frac{4\pi G^2 m \rho}{v^3} \, I(\mathcal{M}) \, v,\label{eq:df}
+\end{equation}
+where $\mathcal{M}=v/c_s$ is the Mach number and $I(\mathcal{M})$ is the
+Coulomb logarithm factor,
+\begin{equation}
+  I(\mathcal{M}) =
+  \begin{cases}
+    \ln\Lambda, & \mathcal{M}\ge 1,\\
+    \min\bigl(\ln\Lambda, \frac{1}{2}\ln\frac{1+\mathcal{M}}{1-\mathcal{M}}-\mathcal{M}\bigr), & \mathcal{M}<1,
+  \end{cases}
+\end{equation}
+with $\ln\Lambda = \ln(1/x_{\min})$.  We also include a geometric drag
+term
+\begin{equation}
+  a_{\rm geom} = - \frac{\pi \rho R^2 v}{m} Q_d \, v ,
+\end{equation}
+where $R$ is the companion's physical radius and $Q_d$ is a drag
+coefficient.
+
+The total drag acceleration is $a_{\rm drag}=a_{\rm DF}+a_{\rm geom}$ and
+is applied whenever the companion lies inside the donor radius.
+
+\subsection{Numerical Implementation}
+During every call to the operator, after computing the mass transfer we
+compute the separation $r$ and relative velocity between the donor and
+the companion.  If $r<R_d$, the local density and sound speed are
+evaluated from the above profiles and Eq.~\eqref{eq:df} is applied to the
+companion's velocity using the timestep $\Delta t$.
+
+The drag parameters are provided as operator parameters:
+\begin{center}
+\begin{tabular}{lll}
+Parameter & Type & Description\\\hline
+\texttt{ce\_rho0} & double & Density at the donor surface $\rho_0$\\
+\texttt{ce\_alpha\_rho} & double & Power--law slope of the density profile\\
+\texttt{ce\_cs} & double & Sound speed at the donor surface $c_{s,0}$\\
+\texttt{ce\_alpha\_cs} & double & Power--law slope of the sound speed\\
+\texttt{ce\_xmin} & double & Defines Coulomb logarithm $\ln\Lambda=\ln(1/x_{\min})$\\
+\texttt{ce\_Qd} & double & Geometric drag coefficient $Q_d$\\
+\end{tabular}
+\end{center}
+
+Only when both $\rho_0$ and $c_{s,0}$ are positive is the drag term
+applied.  The implementation mirrors the dynamical friction force used
+for gaseous disks but adopts a spherical density profile.
+
+\bibliographystyle{plainnat}
+\begin{thebibliography}{99}
+\bibitem[MacLeod et~al.(2018)]{MacLeod2018} MacLeod, M., Ostriker, E.~C., 
+      & Stone, J.~M. 2018, ApJ, 868, 136
+\bibitem[Ostriker(1999)]{Ostriker1999} Ostriker, E.~C. 1999, ApJ, 513, 252
+\end{thebibliography}

@@ -1,0 +1,36 @@
+name: REBOUNDx (C)
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    name: Compiling C examples on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-13]
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ilammy/msvc-dev-cmd@v1
+      - name: Checkout REBOUND
+        uses: actions/checkout@v4
+        with:
+          repository: hannorein/rebound
+          ref: ${{ github.event.client_payload.sha }}
+          path: ./rebound
+      - name: Check if symbols in shared library have correct prefix
+        if: ${{ contains(matrix.os, 'ubuntu') }}
+        run: |
+          echo "Installing REBOUND SHA: ${{ github.event.client_payload.sha }}"
+          export REB_DIR=$GITHUB_WORKSPACE/rebound
+          make
+          nm -g --defined-only libreboundx.so | cut -d ' ' -f3
+          ! nm -g --defined-only libreboundx.so | cut -d ' ' -f3 | grep -v "^rebx_"
+      - name: Compile all examples (ubuntu)
+        working-directory: ./examples
+        if: ${{ contains(matrix.os, 'ubuntu') }}
+        run: |
+          export REB_DIR=$GITHUB_WORKSPACE/rebound
+          make

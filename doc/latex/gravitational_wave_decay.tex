@@ -1,0 +1,16 @@
+\section{Gravitational Wave Orbital Decay}
+\label{sec:gw_decay}
+
+Compact binaries lose orbital energy and angular momentum via the emission of gravitational radiation.  In the quadrupole approximation the orbit-averaged evolution of the semi--major axis $a$ and eccentricity $e$ of a binary with component masses $m_1$ and $m_2$ is given by \citet{Peters1964}
+\begin{align}
+  \frac{da}{dt} &= -\frac{64}{5}\frac{G^3 m_1 m_2 (m_1+m_2)}{c^5 a^3 (1-e^2)^{7/2}}\Bigl(1+\frac{73}{24}e^2+\frac{37}{96}e^4\Bigr),\\
+  \frac{de}{dt} &= -\frac{304}{15}e\frac{G^3 m_1 m_2 (m_1+m_2)}{c^5 a^4 (1-e^2)^{5/2}}\Bigl(1+\frac{121}{304}e^2\Bigr).
+\end{align}
+
+During each operator call we compute the osculating orbit of the donor around the accretor and update $a$ and $e$ using the above expressions over the timestep $\Delta t$.  The donor's position and velocity are then reset using \texttt{reb\_particle\_from\_orbit}.  The parameter ``gw\_c`` specifies the speed of light $c$ in code units.  The integer parameter ``gw\_decay\_on`` toggles the inclusion of this decay.
+
+
+\bibliographystyle{plainnat}
+\begin{thebibliography}{99}
+\bibitem[Peters(1964)]{Peters1964} Peters, P.~C. 1964, Phys. Rev., 136, 1224
+\end{thebibliography}

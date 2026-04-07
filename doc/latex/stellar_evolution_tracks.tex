@@ -1,0 +1,26 @@
+\section{Simplified Stellar Evolution Tracks}
+\label{sec:sse_tracks}
+
+For testing purposes we include a minimal implementation of analytic
+single--star evolution relations inspired by the SSE formulation of
+\citet{Hurley2000}.  The operator tracks the stellar age and updates
+its radius and luminosity using
+\begin{align}
+  t_{\rm MS} &\approx 10^{10}\,\mathrm{yr}\,(M/M_\odot)^{-2.5},\\
+  R_{\rm ZAMS} &\propto (M/M_\odot)^{0.8},\\
+  L_{\rm ZAMS} &\propto (M/M_\odot)^{3.5}.
+\end{align}
+During the main sequence ($t<t_{\rm MS}$) the radius and luminosity
+increase linearly with $t/t_{\rm MS}$.  The updated values are stored
+on the particle itself and also as parameters ``swml_R`` and
+``swml_L`` so that other effects can access them.  When the operator
+is first loaded any particle missing ``swml_L`` is initialized to
+unity (in units of ``sse\_Lsun``).
+
+This implementation is highly approximate and intended only for simple
+experiments when a full stellar evolution code is unavailable.
+
+\bibliographystyle{plainnat}
+\begin{thebibliography}{99}
+\bibitem[Hurley et~al.(2000)]{Hurley2000} Hurley, J.~R., Pols, O.~R., \& Tout, C.~A. 2000, MNRAS, 315, 543
+\end{thebibliography}

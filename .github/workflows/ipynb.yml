@@ -1,0 +1,62 @@
+name: REBOUNDx (ipynb)
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11"]
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest matplotlib scipy 
+          pip install wheel setuptools
+      - name: Default PyPI REBOUND install
+        run: pip install rebound
+      - name: Install REBOUNDx
+        run: |
+          pip install -e . -v 
+      - name: Running jupyter notebooks
+        run: |
+          cd ipython_examples
+          python ipynb2py.py CentralForce.ipynb
+          python ipynb2py.py CustomSplittingIntegrationSchemes.ipynb
+          python ipynb2py.py Custom_Effects.ipynb
+          python ipynb2py.py EccAndIncDamping.ipynb
+          python ipynb2py.py ExponentialMigration.ipynb
+          python ipynb2py.py GeneralRelativity.ipynb
+          python ipynb2py.py GettingStartedParameters.ipynb
+          python ipynb2py.py InnerDiskEdge.ipynb
+          python ipynb2py.py IntegrateForce.ipynb
+          python ipynb2py.py J2.ipynb
+          python ipynb2py.py LenseThirring.ipynb
+          python ipynb2py.py Migration.ipynb
+          python ipynb2py.py ModifyMass.ipynb
+          python ipynb2py.py ObliquityEvolution.ipynb
+          python ipynb2py.py OperatorsOverview.ipynb
+          python ipynb2py.py ParameterInterpolation.ipynb
+          python ipynb2py.py Radiation_Forces_Circumplanetary_Dust.ipynb
+          python ipynb2py.py Radiation_Forces_Debris_Disk.ipynb
+          python ipynb2py.py SavingAndLoadingSimulations.ipynb
+          python ipynb2py.py Simulationarchive.ipynb
+          python ipynb2py.py SpinsIntro.ipynb
+          python ipynb2py.py StochasticForces.ipynb
+          python ipynb2py.py StochasticForcesCartesian.ipynb
+          python ipynb2py.py TidesConstantTimeLag.ipynb
+          python ipynb2py.py TidesSpinEarthMoon.ipynb
+          python ipynb2py.py TidesSpinPseudoSynchronization.ipynb
+          python ipynb2py.py TrackMinDistance.ipynb
+          python ipynb2py.py TypeIMigration.ipynb
+          python ipynb2py.py YarkovskyEffect.ipynb
+          python ipynb2py.py GasDynamicalFriction.ipynb
+          python ipynb2py.py GasDampingTimescale.ipynb

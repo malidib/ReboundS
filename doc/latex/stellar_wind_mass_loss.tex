@@ -1,0 +1,24 @@
+\section{Stellar Wind Mass Loss}
+\label{sec:stellar_wind}
+
+Low- and intermediate-mass stars lose mass through steady winds during
+post--main-sequence evolution.  A commonly used empirical
+prescription is the Reimers law\cite{Reimers1975}
+\begin{equation}
+  \dot M = -4\times10^{-13}\,\eta\,\frac{L}{L_\odot}\frac{R}{R_\odot}\frac{M_\odot}{M}\quad M_\odot\,\mathrm{yr}^{-1},
+\end{equation}
+where $L$ and $R$ are the stellar luminosity and radius and $\eta$ is a
+free efficiency parameter.  This operator applies mass loss according
+to this equation each timestep.  The user specifies $L$, $R$ and
+$\eta$ as particle parameters.  The prefactor and the solar-unit
+conversions can be adjusted through operator parameters.
+
+The removed mass is simply subtracted from the particle's mass.
+Whenever the remaining mass would become negative, the particle's mass
+is set to zero and mass loss stops.  After updating the masses, the
+simulation is moved back to the centre of mass.
+
+\bibliographystyle{plainnat}
+\begin{thebibliography}{99}
+\bibitem[Reimers(1975)]{Reimers1975} Reimers, D. 1975, Mem. Soc. R. Sci. Li\`ege, 8, 369
+\end{thebibliography}
