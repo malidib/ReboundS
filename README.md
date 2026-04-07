@@ -6,5 +6,5 @@ Paper: <...>
 How to install: 
 - The following was tested on python==3.13.2
 - Install rebound==4.5.1
-- Install download this repo and install the modified REBOUNDx using:  pip install -e ./ 
+- Download this repo locally and install the modified REBOUNDx using:  pip install -e ./ 
 - Use REBOUND and REBOUNDx as normal. 
