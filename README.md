@@ -1,7 +1,7 @@
 # Binary Star Evolution Modules in REBOUNDx 
 ** Note: the current repo is temporary while the new modules are fully integrated into main REBOUNDx. **
 
-Paper: <...>
+Paper: https://arxiv.org/abs/2604.06386
 
 How to install: 
 - The following was tested on python==3.13.2
