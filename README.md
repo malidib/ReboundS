@@ -10,6 +10,8 @@ How to install:
 - Use REBOUND and REBOUNDx as normal.
 - Examples are provided in binary_examples/
 
+For any questions or comments: malidib@nyu.edu
+
 REBOUND: https://github.com/hannorein/rebound
 
 REBOUNDx: https://github.com/dtamayo/reboundx
